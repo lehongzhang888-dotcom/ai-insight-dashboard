@@ -3,538 +3,398 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日 AI 业务增长与自动化洞察</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<title>每日 AI 业务增长与自动化洞察 | 2026.05.31</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-    background: #0a1628;
-    color: #e0e6ed;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #0a1628; }
-  ::-webkit-scrollbar-thumb { background: #d4a853; border-radius: 3px; }
-
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, #0a1628 0%, #162744 50%, #0f1f3d 100%);
-    border-bottom: 2px solid #d4a853;
-    padding: 36px 24px 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #0a1628, #d4a853, #f0c060, #d4a853, #0a1628);
-  }
-  .header h1 {
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
-    font-weight: 700;
-    color: #f0c060;
-    letter-spacing: 2px;
-    position: relative;
-  }
-  .header h1 span { color: #e8c97a; }
-  .header .subtitle {
-    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
-    color: #8899aa;
-    margin-top: 6px;
-    letter-spacing: 1px;
-  }
-
-  /* Container */
-  .container {
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-  }
-
-  /* Judgment Banner */
-  .judgment-banner {
-    background: linear-gradient(135deg, #0f1f3d, #162744);
-    border: 1px solid #d4a853;
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-bottom: 28px;
-    position: relative;
-  }
-  .judgment-banner::after {
-    content: '📊';
-    position: absolute;
-    top: 12px; right: 16px;
-    font-size: 1.5rem;
-    opacity: 0.4;
-  }
-  .judgment-banner .label {
-    font-size: 0.8rem;
-    color: #d4a853;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .judgment-banner p {
-    font-size: clamp(0.9rem, 1.4vw, 1.05rem);
-    color: #c8d0d8;
-    line-height: 1.8;
-  }
-
-  /* Grid */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  /* Cards */
-  .card {
-    background: linear-gradient(145deg, rgba(15,31,61,0.9), rgba(22,39,68,0.85));
-    border: 1px solid rgba(212,168,83,0.25);
-    border-radius: 12px;
-    padding: 22px 24px 24px;
-    transition: border-color 0.25s, transform 0.2s;
-    position: relative;
-  }
-  .card:hover {
-    border-color: rgba(212,168,83,0.55);
-    transform: translateY(-2px);
-  }
-  .card-full { grid-column: 1 / -1; }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(212,168,83,0.15);
-  }
-  .card-header .icon { font-size: 1.3rem; }
-  .card-header h2 {
-    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
-    font-weight: 600;
-    color: #e8c97a;
-  }
-
-  /* Priority Badge */
-  .badge-high, .badge-medium {
-    display: inline-block;
-    padding: 1px 10px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  .badge-high { background: rgba(220,53,69,0.85); color: #fff; }
-  .badge-medium { background: rgba(255,152,0,0.85); color: #fff; }
-
-  /* Top5 list */
-  .dynamic-list { list-style: none; }
-  .dynamic-list li {
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: #c8d0d8;
-  }
-  .dynamic-list li:last-child { border-bottom: none; }
-
-  /* Content text */
-  .card p, .card li { font-size: 0.88rem; color: #c8d0d8; line-height: 1.75; }
-  .card ul, .card ol { padding-left: 1.2em; }
-  .card li { margin-bottom: 4px; }
-  .card strong { color: #e0e6ed; }
-
-  /* ROIs */
-  .roi-high { color: #28a745; font-weight: 600; }
-  .roi-medium { color: #f0c060; font-weight: 600; }
-
-  /* Action Tags */
-  .action-section { margin-top: 14px; }
-  .action-section h3 {
-    font-size: 0.82rem;
-    color: #d4a853;
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
-  }
-  .action-section h3:not(:first-child) { margin-top: 12px; }
-  .action-list {
-    list-style: none;
-    padding: 0 !important;
-  }
-  .action-list li {
-    padding: 5px 0 5px 18px;
-    position: relative;
-    font-size: 0.85rem;
-    color: #b0bcc8;
-  }
-  .action-list li::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 12px;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #d4a853;
-  }
-  .tag-today { color: #f0c060; font-weight: 600; }
-  .tag-week { color: #d4a853; font-weight: 600; }
-  .tag-month { color: #8899aa; font-weight: 600; }
-
-  /* Risk */
-  .risk-note {
-    background: rgba(255,152,0,0.08);
-    border-left: 3px solid #ff9800;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.82rem;
-    color: #e8c97a;
-    margin-top: 8px;
-  }
-
-  /* Charts */
-  .chart-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .chart-box {
-    background: rgba(10,22,40,0.6);
-    border-radius: 10px;
-    padding: 14px;
-    position: relative;
-    min-height: 220px;
-  }
-  .chart-box h3 {
-    font-size: 0.8rem;
-    color: #8899aa;
-    text-align: center;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-  }
-
-  /* Tool item */
-  .tool-item {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 16px;
-    margin-bottom: 4px;
-  }
-  .tool-item .tool-label { color: #8899aa; min-width: 80px; }
-  .tool-item .tool-value { color: #c8d0d8; }
-
-  .stars { color: #f0c060; letter-spacing: 2px; }
-
-  /* Prompt block */
-  .prompt-block {
-    background: rgba(10,22,40,0.5);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-top: 10px;
-    border-left: 3px solid #d4a853;
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: #b0bcc8;
-  }
-  .prompt-block strong { color: #e8c97a; }
-
-  /* Footer */
-  .footer {
-    margin-top: 40px;
-    padding: 20px 24px;
-    border-top: 1px solid rgba(212,168,83,0.15);
-    text-align: center;
-    font-size: 0.75rem;
-    color: #667788;
-    line-height: 1.8;
-  }
-  .footer strong { color: #8899aa; }
-
-  /* Responsive */
-  @media (max-width: 820px) {
-    .grid { grid-template-columns: 1fr; }
-    .chart-grid { grid-template-columns: 1fr; }
-    .card { padding: 18px 16px 20px; }
-    .container { padding: 16px 12px 32px; }
-    .judgment-banner { padding: 18px 20px; }
-  }
-
-  @media (max-width: 480px) {
-    .header { padding: 24px 16px 20px; }
-    .judgment-banner::after { display: none; }
-  }
+:root {
+  --bg: #1a1a2e;
+  --card-bg: #16213e;
+  --gold: #d4a853;
+  --gold-light: #e8c97a;
+  --text: #e0d6c2;
+  --text-muted: #9a8c7a;
+  --border: #2a2a4a;
+  --accent: #0f3460;
+  --high: #e74c3c;
+  --mid: #f39c12;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+/* Header */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, #0f1b33 0%, #1a2744 50%, #0f1b33 100%);
+  border-bottom: 2px solid var(--gold);
+  padding: 16px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+}
+.header h1 {
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+.header .date {
+  font-size: 0.85rem; color: var(--text-muted);
+}
+.header .source {
+  font-size: 0.75rem; color: var(--text-muted); opacity: 0.7;
+}
+/* Container */
+.container {
+  max-width: 960px; margin: 0 auto; padding: 20px 16px 40px;
+}
+/* Summary Card */
+.summary-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.summary-card .label {
+  font-size: 0.8rem; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.summary-card p {
+  font-size: 0.95rem; color: var(--text);
+  margin-bottom: 6px;
+}
+.summary-card .tags {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+}
+.summary-card .tag {
+  background: var(--accent); color: var(--gold-light);
+  padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;
+}
+/* Charts row */
+.charts-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 20px;
+}
+.chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px;
+}
+.chart-card h3 {
+  color: var(--gold); font-size: 0.9rem;
+  text-align: center; margin-bottom: 8px;
+}
+.chart-card canvas { max-height: 240px; }
+/* Section Card */
+.section-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.section-card h2 {
+  font-size: 1.05rem; color: var(--gold);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.section-card h3 {
+  font-size: 0.92rem; color: var(--gold-light);
+  margin: 12px 0 6px;
+}
+.section-card ul { padding-left: 18px; margin: 8px 0; }
+.section-card li {
+  font-size: 0.88rem; margin-bottom: 4px;
+  color: var(--text);
+}
+.section-card p { font-size: 0.88rem; margin-bottom: 6px; }
+/* Badge */
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 600; margin-right: 6px;
+}
+.badge-high { background: #e74c3c22; color: #e74c3c; border: 1px solid #e74c3c44; }
+.badge-mid { background: #f39c1222; color: #f39c12; border: 1px solid #f39c1244; }
+.badge-roi { background: #27ae6022; color: #27ae60; border: 1px solid #27ae6044; }
+/* Action table */
+.action-table {
+  width: 100%; border-collapse: collapse; margin-top: 8px;
+  font-size: 0.85rem;
+}
+.action-table th {
+  background: var(--accent); color: var(--gold);
+  padding: 8px 12px; text-align: left; font-weight: 600;
+}
+.action-table td {
+  padding: 8px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.action-table tr:last-child td { border-bottom: none; }
+/* Tool card */
+.tool-highlight {
+  background: linear-gradient(135deg, #1a2744, #16213e);
+  border: 1px solid var(--gold);
+  border-radius: 8px; padding: 16px 20px;
+  margin: 10px 0;
+}
+.tool-highlight .name { color: var(--gold); font-size: 1rem; font-weight: 700; }
+/* Footer */
+.footer {
+  text-align: center; padding: 24px;
+  font-size: 0.75rem; color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+.highlight { color: var(--gold); font-weight: 600; }
+.separator { border: none; border-top: 1px dashed var(--border); margin: 12px 0; }
+/* Case blockquote */
+blockquote {
+  border-left: 3px solid var(--gold);
+  padding: 8px 16px; margin: 10px 0;
+  background: #0f1b3311; font-size: 0.85rem;
+  color: var(--text-muted);
+}
+/* Responsive */
+@media (max-width: 640px) {
+  .charts-row { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .section-card { padding: 14px 16px; }
+}
 </style>
 </head>
 <body>
 
-<header class="header">
-  <h1>📈 每日 AI 业务增长与自动化洞察</h1>
-  <p class="subtitle">2026年5月29日 · 星期五</p>
-</header>
+<div class="header">
+  <div>
+    <h1>📊 每日 AI 业务增长与自动化洞察</h1>
+    <span class="date">2026年5月31日（周日）</span>
+  </div>
+  <div class="source">数据来源：极客公园 · IT之家</div>
+</div>
 
 <div class="container">
 
-  <!-- 1. 今日总判断 -->
-  <div class="judgment-banner">
-    <div class="label">今日总判断</div>
-    <p>Google I/O 2026 正式宣告 AI 从"辅助工具"进入"<strong>Agent 自主执行</strong>"阶段，Gemini 3.5 Flash 以极低成本+极高速度让 Agent 工作流大规模落地成为现实；同时阿里云推出完整的 Agentic 平台，国内企业级 AI Agent 部署门槛大幅降低。</p>
+<!-- 1) 今日总判断 -->
+<div class="summary-card">
+  <div class="label">📌 今日总判断</div>
+  <p>本周最值得关注的 AI 变化是<span class="highlight">阿里云完成"Agentic 时刻"组织级转身</span>——从卖 GPU 转向卖 Agent 结果，56款产品 Skill 化、千问云新官网上线。</p>
+  <p><strong>三重意义：</strong></p>
+  <div class="tags">
+    <span class="tag">🏭 业务管理：百炼平台让非技术人员也能用 Agent</span>
+    <span class="tag">📈 投资工具：Qwen3.7-Max 登顶国产开源</span>
+    <span class="tag">🛒 跨境电商：阿里生态 Agent 化利好全链路</span>
   </div>
+</div>
 
-  <div class="grid">
-
-    <!-- 2. 今日高价值动态 Top 5 -->
-    <div class="card card-full">
-      <div class="card-header">
-        <span class="icon">🔥</span>
-        <h2>今日高价值动态 Top 5</h2>
-      </div>
-      <ol class="dynamic-list">
-        <li><span class="badge-high">高</span> <strong>Google I/O 2026：AI 正式进入 Agent 时代</strong> — Gemini 3.5 Flash 速度快、成本极低，是 Agent 推理新基础设施</li>
-        <li><span class="badge-high">高</span> <strong>阿里云「Agentic 时刻」</strong> — 百炼平台支持低代码 Agent 构建，对接钉钉/企微，国内企业落地最便捷</li>
-        <li><span class="badge-medium">中</span> <strong>微软叫停 Vibe Coding</strong> — Token 成本已超初级员工工资，启示：AI 应做重复性工作，难判断的留给人类</li>
-        <li><span class="badge-high">高</span> <strong>Devin 估值涨 25 倍</strong> — AI 写 90% 代码，证明一人可用 AI 独立开发工具，无需雇佣技术团队</li>
-        <li><span class="badge-medium">中</span> <strong>Meta 推出 2.99 美元 AI 订阅</strong> — AI 客服/营销正变成"水电煤"级基础设施</li>
-      </ol>
-    </div>
-
-    <!-- 3. 行业专属洞察 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">🏗️</span>
-        <h2>行业专属：建筑管材 / 管道业务洞察</h2>
-      </div>
-      <p><strong>场景：招投标信息自动化采集与分析</strong></p>
-      <ul>
-        <li>定时抓取各招投标平台</li>
-        <li>智能关键词筛选（HDPE 管、PPR 管、钢带增强管、市政给排水等）</li>
-        <li>自动摘要项目概况 / 预算 / 资质 / 截止时间</li>
-        <li>推送通知到钉钉 / 企微</li>
-      </ul>
-      <p style="margin-top:8px;"><span class="roi-high">ROI：高</span>（日省 1+ 小时 / 人）</p>
-    </div>
-
-    <!-- 4. 管理赋能建议 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">👔</span>
-        <h2>管理赋能建议</h2>
-      </div>
-      <p><strong>用 AI 生成"客户健康度快照"：</strong></p>
-      <ul>
-        <li>标注每位客户健康度（红 / 黄 / 绿）</li>
-        <li>识别本周紧急跟进客户</li>
-        <li>输出挽回建议和下月商机排序</li>
-        <li>30 分钟完成原本 2 小时的分析</li>
-      </ul>
-    </div>
-
-    <!-- 5. 投资工具灵感 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">💹</span>
-        <h2>投资工具灵感</h2>
-      </div>
-      <p><strong>股票：</strong>AI 财报速读 + 异动监控仪表盘；搭建"自选股五日简报"脚本</p>
-      <p style="margin-top:6px;"><strong>数字货币：</strong>链上数据监控 + 叙事跟踪；构建"币圈每日叙事追踪"</p>
-      <div class="risk-note">⚠️ AI 摘要不能替代完整阅读，不做买卖依据</div>
-    </div>
-
-    <!-- 6. 一人公司自动化洞察 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">🚀</span>
-        <h2>一人公司自动化洞察</h2>
-      </div>
-      <p><strong>重点：Listing 多语言批量生成</strong></p>
-      <ul>
-        <li>Gemini 3.5 Flash 百万 token 仅几分钱，支持 100+ 语言</li>
-        <li>阿里云百炼支持批量任务</li>
-        <li>人工 1 条 Listing 需 30-60 分钟，AI 仅需 10 秒</li>
-        <li>建议今天用 3 个产品测试英文 Listing 生成</li>
-      </ul>
-    </div>
-
-    <!-- 7. 今日工具推荐 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">🛠️</span>
-        <h2>今日工具推荐</h2>
-      </div>
-      <p><strong>阿里云百炼（Bailian）Agent 平台</strong></p>
-      <div class="tool-item"><span class="tool-label">定位：</span><span class="tool-value">国内最成熟的企业级 Agent 平台</span></div>
-      <div class="tool-item"><span class="tool-label">特点：</span><span class="tool-value">低代码构建，深度集成钉钉/企微</span></div>
-      <div class="tool-item"><span class="tool-label">上手：</span><span class="tool-value">中等（1-3 天）</span></div>
-      <div class="tool-item"><span class="tool-label">推荐：</span><span class="tool-value"><span class="stars">★★★★★</span></span></div>
-    </div>
-
-    <!-- 8. 今日案例 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="icon">📋</span>
-        <h2>今日案例</h2>
-      </div>
-      <p><strong>阿里云销售团队用 Agent 提效 60%</strong></p>
-      <ul>
-        <li><strong>售前 Agent：</strong>自动生成客户画像和切入策略</li>
-        <li><strong>售中 Agent：</strong>自动生成报价方案和合同草稿</li>
-        <li><strong>售后 Agent：</strong>预警流失风险，生成续费建议</li>
-        <li><strong>管理 Agent：</strong>自动汇总 pipeline，识别卡点</li>
-      </ul>
-      <p style="margin-top:8px; color:#e8c97a;">启发：从"客户画像 Agent"切入，ROI 最高</p>
-    </div>
-
-    <!-- 9. 今日实操技巧 -->
-    <div class="card card-full">
-      <div class="card-header">
-        <span class="icon">💡</span>
-        <h2>今日实操技巧：Prompt</h2>
-      </div>
-      <p><strong>客户拜访纪要 → 结构化行动清单</strong></p>
-      <div class="prompt-block">
-        把拜访录音文字发给 AI，让 AI 输出：<strong>核心需求（3 点）</strong>、<strong>预算时间线</strong>、<strong>竞争态势</strong>、<strong>下一步行动清单（谁 / 做什么 / 截止时间）</strong>、<strong>风险提示</strong>。每次拜访后 5 分钟生成，直接发团队。
-      </div>
-    </div>
-
+<!-- Charts -->
+<div class="charts-row">
+  <div class="chart-card">
+    <h3>优先级分布</h3>
+    <canvas id="priorityChart"></canvas>
   </div>
-
-  <!-- Charts Section -->
-  <div style="margin-top:28px; margin-bottom:28px;">
-    <div class="card card-full">
-      <div class="card-header">
-        <span class="icon">📊</span>
-        <h2>数据概览</h2>
-      </div>
-      <div class="chart-grid">
-        <div class="chart-box">
-          <h3>优先级分布</h3>
-          <canvas id="chartPie"></canvas>
-        </div>
-        <div class="chart-box">
-          <h3>方向分布</h3>
-          <canvas id="chartBar"></canvas>
-        </div>
-      </div>
-    </div>
+  <div class="chart-card">
+    <h3>方向分布</h3>
+    <canvas id="directionChart"></canvas>
   </div>
+</div>
 
-  <!-- 10. 今日行动清单 -->
-  <div class="card card-full">
-    <div class="card-header">
-      <span class="icon">✅</span>
-      <h2>今日行动清单</h2>
-    </div>
-    <div class="action-section">
-      <h3>📌 今天</h3>
-      <ul class="action-list">
-        <li>用 Gemini 3.5 Flash 测试自动化任务</li>
-        <li>整理招投标关键词和标讯来源</li>
-        <li>用 AI 分析客户健康度</li>
-      </ul>
-      <h3>📌 本周</h3>
-      <ul class="action-list">
-        <li>注册百炼平台建招投标 Agent</li>
-        <li>选 3 产品测试 AI 英文 Listing</li>
-        <li>开发客户拜访汇总工具</li>
-      </ul>
-      <h3>📌 本月</h3>
-      <ul class="action-list">
-        <li>招投标 Agent 稳定工作流</li>
-        <li>多语言 Listing SOP</li>
-        <li>投资研究小脚本</li>
-      </ul>
-    </div>
+<!-- 2) Top 5 -->
+<div class="section-card">
+  <h2>🔥 今日高价值动态 Top 5</h2>
+
+  <h3><span class="badge badge-high">高</span>① 阿里云 Agentic 转身：从"卖 Token"到"卖结果"</h3>
+  <p>56款产品 Skill 化，千问云新官网上线，销售考核从"算力销量"变为"Agent 闭环比例"。百炼平台支持 OpenAI SDK 兼容 + Bailian CLI 直接对接 Claude Code。</p>
+  <p>💡 <strong>建议：</strong>本周注册百炼平台，试用 Qwen3.7-Max API 生成客户拜访摘要。</p>
+
+  <hr class="separator">
+
+  <h3><span class="badge badge-high">高</span>② 工厂物理 AI 落地加速——微亿智造验证工业具身智能 ROI</h3>
+  <p>从 2018 年起将 AI 引入机械臂，实现"看见→判断→处理"全闭环。2025 年研发投入 2.35 亿元（占收入 29.6%），海外从 0 到 1。累计 23TB+ 工业精标数据，新项目部署从数月压缩至数周。</p>
+  <p>💡 <strong>建议：</strong>调研建筑管材行业质检/码垛环节的人工占比，评估 AI 替代的 ROI。</p>
+
+  <hr class="separator">
+
+  <h3><span class="badge badge-high">高</span>③ Devin 用 AI 自写 90% 代码，估值暴涨 25 倍</h3>
+  <p>Cognition AI 的 Devin 平台实现 AI 自写 90% 自身代码，估值从上一轮涨 25 倍。Vibe Coding 平台独立路径被验证——"非程序员用自然语言造工具"时代加速到来。</p>
+  <p>💡 <strong>建议：</strong>本周用 Claude Code 试做一个"客户拜访记录→摘要"小工具。</p>
+
+  <hr class="separator">
+
+  <h3><span class="badge badge-mid">中</span>④ Gemini 3.5 Flash：Agent 游戏规则因速度而改变</h3>
+  <p>极低延迟 + 极低成本让 Agent 从 PoC 走向生产。可搭"实时监控竞品招投标信息"的 Agent，不怕 Token 烧钱。</p>
+  <p>💡 <strong>建议：</strong>关注 Flash 类模型的中文接入方案（阿里百炼/火山引擎）。</p>
+
+  <hr class="separator">
+
+  <h3><span class="badge badge-mid">中</span>⑤ Google I/O 2026：AI 从辅助走向独立完成复杂工作流</h3>
+  <p>行业共识形成——Agent 是 2026 年 AI 落地的核心形态。Gemini Spark 个人 Agent 24 小时云端执行长任务。</p>
+  <p>💡 <strong>建议：</strong>列出日常工作中"占用时间但不需要判断力"的 3 个环节，优先 Agent 化。</p>
+</div>
+
+<!-- 3) Industry -->
+<div class="section-card">
+  <h2>🏭 行业专属：建筑管材 / 管道业务 AI 洞察</h2>
+  <h3>业务场景</h3>
+  <p>管材/管道行业的生产质检 + 仓储物流 + 销售决策联动</p>
+  <h3>AI 应用方式（映射自微亿智造案例）</h3>
+  <ul>
+    <li><strong>质检环节：</strong>AI 视觉 + 机械臂"飞拍技术"——不停歇连续拍摄，数分钟完成数百个检测点位</li>
+    <li><strong>码垛环节：</strong>不同规格管材智能码垛——AI 像人一样"先看、再判断、再放置"</li>
+    <li><strong>销售决策联动：</strong>质检数据→自动生成批次质量报告→驱动客户沟通策略</li>
+  </ul>
+  <h3>建议试点</h3>
+  <p>先做"轻量化"切入：手机拍摄管材外观 + AI 视觉模型（Qwen-VL）做缺陷初筛，<span class="highlight">零硬件投入</span>。</p>
+  <p><span class="badge badge-roi">ROI：中</span> 短期 AI 视觉辅助质检 ROI 高；全自动化机械臂适合大规模产线</p>
+</div>
+
+<!-- 4) Management -->
+<div class="section-card">
+  <h2>📋 管理赋能建议</h2>
+  <h3>用 AI 重构你的"例会信息流"</h3>
+  <p>作为业务部门主管，例会是你最重要的信息汇聚点，但也是时间黑洞。</p>
+  <ol>
+    <li>下次例会前，让团队成员用固定模板（本周做了什么 / 卡点 / 下周计划）发到群里</li>
+    <li>把群消息复制给 AI，Prompt：<em>"整理为：① 整体进展摘要 ② 共性问题 Top 3 ③ 需要我介入的决策事项"</em></li>
+    <li>例会直接从 AI 整理结果开始讨论</li>
+  </ol>
+  <p>🎯 <strong>效果：</strong>例会时间缩短 50%，精力从"听汇报"转向"做决策"</p>
+</div>
+
+<!-- 5) Investment -->
+<div class="section-card">
+  <h2>💰 投资工具灵感</h2>
+  <h3>📈 股票</h3>
+  <p><strong>方向：</strong>招投标信息 → 供应链股票映射工具</p>
+  <p>自动抓取全国大型基建招标公告 → 提取管材相关项目 → 映射到 A 股管材企业（伟星新材、中国联塑等）→ 形成"政策热度指数"</p>
+  <blockquote>⚠️ 风险提醒：招投标信息≠股价涨跌，仅作为行业景气度参考。AI 抓取信息需人工核实。</blockquote>
+
+  <h3>🪙 数字货币</h3>
+  <p><strong>方向：</strong>链上数据 Agent 化——大额转账自动监控 + 飞书推送</p>
+  <blockquote>⚠️ 风险提醒：链上数据有滞后性，大额转账可能只是内部调仓。任何自动提醒都只是"信息输入"，不是交易信号。</blockquote>
+</div>
+
+<!-- 6) E-commerce -->
+<div class="section-card">
+  <h2>🛒 一人公司自动化洞察</h2>
+  <h3>今日最值得自动化：Listing 多语言批量生成</h3>
+  <p><strong>推荐工具：</strong>Qwen3.7-Max（百炼平台）+ Batch API</p>
+  <ul>
+    <li>Qwen 多语言能力进入全球第一梯队</li>
+    <li>Batch API 成本比实时便宜 50%+</li>
+    <li>AI 10 分钟生成 100 条 Listing 初稿，人工只需审核微调</li>
+  </ul>
+  <p>💡 <strong>测试动作：</strong>选 3 个产品，用 Prompt 生成英文 Listing，对比人工版本质量差异。</p>
+</div>
+
+<!-- 7) Tool -->
+<div class="section-card">
+  <h2>🔧 今日工具推荐</h2>
+  <div class="tool-highlight">
+    <div class="name">阿里云百炼（Bailian）平台</div>
+    <p>模型推理 + Agent 构建二合一平台 | 200+ 模型 API | OpenAI SDK 兼容 | Prompt Caching 降成本 98%</p>
+    <p><strong>适合场景：</strong>业务管理 Agent · 投资研究 · 电商 Listing 批量生成</p>
+    <p><strong>上手难度：</strong>⭐⭐（注册即用）| <strong>是否深入研究：</strong>是——未来 1-2 年国内 Agent 开发核心基础设施</p>
   </div>
+</div>
 
-  <footer class="footer">
-    <strong>📡 信息源：</strong>Google I/O 2026、阿里云官方、微软官方、Devin 官方、Meta 官方<br>
-    <strong>⚠️ 免责声明：</strong>本简报由 AI 自动生成，仅供参考，不构成任何投资建议或商业决策依据。所有信息请以官方发布为准。
-  </footer>
+<!-- 8) Case -->
+<div class="section-card">
+  <h2>📖 今日案例</h2>
+  <h3>微亿智造——从 2018 年开始把 AI 引入传统机械臂</h3>
+  <p><strong>场景：</strong>工业制造（检测 + 打磨 + 装配 + 码垛）</p>
+  <p><strong>关键做法：</strong></p>
+  <ul>
+    <li>不从"人形机器人"出发，在传统机械臂上加"AI 大脑"</li>
+    <li>"先轻后重"策略：先 AI 视觉质检 → 再做"查打一体" → 再探索 VLA</li>
+    <li>核心分界线："看见→判断→处理"闭环 vs 传统"预设轨迹执行"</li>
+    <li>数据飞轮：23TB+ 精标数据，新项目从数月压缩至数周</li>
+  </ul>
+  <p><strong>对你的启发：</strong>从手机拍照 + AI 质检做起，零硬件投入先验证。关键是找到"高频 + ROI 清晰"的第一个场景。</p>
+</div>
+
+<!-- 9) Tip -->
+<div class="section-card">
+  <h2>💡 今日实操技巧（业务管理 Prompt）</h2>
+  <h3>客户拜访后快速生成结构化记录</h3>
+  <blockquote>
+    <strong>Prompt 模板：</strong><br>
+    你是一名 B2B 销售管理助手。我将提供一段客户拜访的原始记录，请整理为：<br>
+    1. 客户基本信息 2. 核心议题 3. 痛点/需求 4. 我方回应 5. 客户疑虑<br>
+    6. 竞争情况 7. 下一步动作（谁、做什么、截止时间） 8. 拜访评分（1-10）<br><br>
+    使用方式：拜访后 5 分钟口述（微信语音转文字）→ 粘贴 → 30 秒拿到结构化纪要
+  </blockquote>
+</div>
+
+<!-- 10) Action -->
+<div class="section-card">
+  <h2>✅ 今日行动清单</h2>
+  <table class="action-table">
+    <tr><th>时间</th><th>行动</th><th>预计耗时</th></tr>
+    <tr><td>今天立刻做</td><td>注册阿里云百炼平台，试用 Qwen3.7-Max 生成客户拜访摘要</td><td>20 分钟</td></tr>
+    <tr><td>今天立刻做</td><td>用 Prompt 模板整理本周最后一次客户拜访记录</td><td>5 分钟</td></tr>
+    <tr><td>本周推进</td><td>用 Claude Code 搭建"管材行业招投标舆情监控"HTML 看板</td><td>2 小时</td></tr>
+    <tr><td>本周推进</td><td>选 3 个产品，用 AI 生成英文 Listing 初稿并人工审核</td><td>1 小时</td></tr>
+    <tr><td>本月沉淀</td><td>建立"例会 AI 纪要 SOP"——固定模板 + AI 整理 → 例会只讨论决策</td><td>持续优化</td></tr>
+    <tr><td>本月沉淀</td><td>调研管材质检环节 AI 视觉可行性（手机拍照 → AI 判断缺陷）</td><td>调研 + PoC</td></tr>
+  </table>
+</div>
 
 </div>
 
+<div class="footer">
+  AI业务增长与自动化洞察 · 每日早9点自动生成 · 2026<br>
+  信息来源：极客公园 (geekpark.net) · IT之家 (ithome.com) · 训练知识
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  Chart.defaults.color = '#8899aa';
-  Chart.defaults.font.family = "-apple-system, 'PingFang SC', 'Noto Sans SC', sans-serif";
-
-  // Pie Chart — 优先级分布
-  new Chart(document.getElementById('chartPie'), {
-    type: 'pie',
-    data: {
-      labels: ['高优先级', '中优先级'],
-      datasets: [{
-        data: [3, 2],
-        backgroundColor: ['rgba(220,53,69,0.75)', 'rgba(255,152,0,0.75)'],
-        borderColor: ['rgba(220,53,69,1)', 'rgba(255,152,0,1)'],
-        borderWidth: 1.5
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { padding: 12, usePointStyle: true, pointStyle: 'circle' }
-        }
-      }
+// Priority pie chart
+new Chart(document.getElementById('priorityChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['高优先级', '中优先级'],
+    datasets: [{
+      data: [3, 2],
+      backgroundColor: ['#d4a853', '#e8c97a88'],
+      borderColor: ['#1a1a2e', '#1a1a2e'],
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#e0d6c2', font: { size: 12 }, padding: 16 } }
     }
-  });
+  }
+});
 
-  // Bar Chart — 方向分布
-  new Chart(document.getElementById('chartBar'), {
-    type: 'bar',
-    data: {
-      labels: ['业务管理', '跨境电商', '投资工具', '通用动态'],
-      datasets: [{
-        label: '关注度占比 (%)',
-        data: [40, 30, 20, 10],
-        backgroundColor: [
-          'rgba(212,168,83,0.7)',
-          'rgba(240,192,96,0.7)',
-          'rgba(232,201,122,0.7)',
-          'rgba(212,168,83,0.35)'
-        ],
-        borderColor: [
-          'rgba(212,168,83,1)',
-          'rgba(240,192,96,1)',
-          'rgba(232,201,122,1)',
-          'rgba(212,168,83,0.6)'
-        ],
-        borderWidth: 1.5,
-        borderRadius: 4
-      }]
+// Direction bar chart
+new Chart(document.getElementById('directionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['业务管理', '跨境电商', '投资工具', 'AI通用'],
+    datasets: [{
+      label: '内容占比',
+      data: [42, 28, 20, 10],
+      backgroundColor: ['#d4a853', '#e8c97a', '#c49b3f', '#b8860b'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    scales: {
+      y: { beginAtZero: true, max: 50, ticks: { color: '#9a8c7a', callback: v => v + '%' }, grid: { color: '#2a2a4a44' } },
+      x: { ticks: { color: '#e0d6c2', font: { size: 11 } }, grid: { display: false } }
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      indexAxis: 'x',
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 50,
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { callback: function(v) { return v + '%'; } }
-        },
-        x: {
-          grid: { display: false }
-        }
-      }
+    plugins: {
+      legend: { display: false }
     }
-  });
+  }
 });
 </script>
 
