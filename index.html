@@ -3,400 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日 AI 业务增长与自动化洞察 | 2026.06.01</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>AI洞察日报 - 2026-06-17</title>
 <style>
-:root {
-  --bg: #1a1a2e;
-  --card-bg: #16213e;
-  --gold: #d4a853;
-  --gold-light: #e8c97a;
-  --text: #e0d6c2;
-  --text-muted: #9a8c7a;
-  --border: #2a2a4a;
-  --accent: #0f3460;
-  --high: #e74c3c;
-  --mid: #f39c12;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  min-height: 100vh;
-}
-/* Header */
-.header {
-  position: sticky; top: 0; z-index: 100;
-  background: linear-gradient(135deg, #0f1b33 0%, #1a2744 50%, #0f1b33 100%);
-  border-bottom: 2px solid var(--gold);
-  padding: 16px 24px;
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 8px;
-}
-.header h1 {
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  color: var(--gold);
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-.header .date {
-  font-size: 0.85rem; color: var(--text-muted);
-}
-.header .source {
-  font-size: 0.75rem; color: var(--text-muted); opacity: 0.7;
-}
-/* Container */
-.container {
-  max-width: 960px; margin: 0 auto; padding: 20px 16px 40px;
-}
-/* Summary Card */
-.summary-card {
-  background: var(--card-bg);
-  border-left: 4px solid var(--gold);
-  border-radius: 8px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-}
-.summary-card .label {
-  font-size: 0.8rem; color: var(--gold);
-  text-transform: uppercase; letter-spacing: 2px;
-  margin-bottom: 8px;
-}
-.summary-card p {
-  font-size: 0.95rem; color: var(--text);
-  margin-bottom: 6px;
-}
-.summary-card .tags {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
-}
-.summary-card .tag {
-  background: var(--accent); color: var(--gold-light);
-  padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;
-}
-/* Charts row */
-.charts-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 16px; margin-bottom: 20px;
-}
-.chart-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px; padding: 16px;
-}
-.chart-card h3 {
-  color: var(--gold); font-size: 0.9rem;
-  text-align: center; margin-bottom: 8px;
-}
-.chart-card canvas { max-height: 240px; }
-/* Section Card */
-.section-card {
-  background: var(--card-bg);
-  border-left: 4px solid var(--gold);
-  border-radius: 8px;
-  padding: 20px 24px;
-  margin-bottom: 16px;
-}
-.section-card h2 {
-  font-size: 1.05rem; color: var(--gold);
-  margin-bottom: 12px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
-}
-.section-card h3 {
-  font-size: 0.92rem; color: var(--gold-light);
-  margin: 12px 0 6px;
-}
-.section-card ul { padding-left: 18px; margin: 8px 0; }
-.section-card li {
-  font-size: 0.88rem; margin-bottom: 4px;
-  color: var(--text);
-}
-.section-card p { font-size: 0.88rem; margin-bottom: 6px; }
-/* Badge */
-.badge {
-  display: inline-block; padding: 2px 8px; border-radius: 4px;
-  font-size: 0.75rem; font-weight: 600; margin-right: 6px;
-}
-.badge-high { background: #e74c3c22; color: #e74c3c; border: 1px solid #e74c3c44; }
-.badge-mid { background: #f39c1222; color: #f39c12; border: 1px solid #f39c1244; }
-.badge-roi { background: #27ae6022; color: #27ae60; border: 1px solid #27ae6044; }
-/* Action table */
-.action-table {
-  width: 100%; border-collapse: collapse; margin-top: 8px;
-  font-size: 0.85rem;
-}
-.action-table th {
-  background: var(--accent); color: var(--gold);
-  padding: 8px 12px; text-align: left; font-weight: 600;
-}
-.action-table td {
-  padding: 8px 12px; border-bottom: 1px solid var(--border);
-  color: var(--text);
-}
-.action-table tr:last-child td { border-bottom: none; }
-/* Tool card */
-.tool-highlight {
-  background: linear-gradient(135deg, #1a2744, #16213e);
-  border: 1px solid var(--gold);
-  border-radius: 8px; padding: 16px 20px;
-  margin: 10px 0;
-}
-.tool-highlight .name { color: var(--gold); font-size: 1rem; font-weight: 700; }
-/* Footer */
-.footer {
-  text-align: center; padding: 24px;
-  font-size: 0.75rem; color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-.highlight { color: var(--gold); font-weight: 600; }
-.separator { border: none; border-top: 1px dashed var(--border); margin: 12px 0; }
-/* Case blockquote */
-blockquote {
-  border-left: 3px solid var(--gold);
-  padding: 8px 16px; margin: 10px 0;
-  background: #0f1b3311; font-size: 0.85rem;
-  color: var(--text-muted);
-}
-/* Responsive */
-@media (max-width: 640px) {
-  .charts-row { grid-template-columns: 1fr; }
-  .header { flex-direction: column; align-items: flex-start; }
-  .section-card { padding: 14px 16px; }
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background:#0a1628; color:#c9d1d9; line-height:1.7; }
+.header { background:linear-gradient(135deg, #0d2137, #162d50); padding:30px 40px; border-bottom:2px solid #d4a853; }
+.header h1 { color:#f0d78c; font-size:24px; }
+.header .date { color:#8899aa; font-size:14px; margin-top:6px; }
+.header .summary { background:#152238; padding:15px 20px; margin-top:15px; border-left:3px solid #d4a853; border-radius:4px; font-size:14px; color:#b0c4d8; }
+.container { max-width:900px; margin:0 auto; padding:30px 20px; }
+.section { background:#0d2137; border-radius:8px; margin-bottom:20px; padding:25px; border:1px solid #1a3350; }
+.section h2 { color:#f0d78c; font-size:18px; margin-bottom:15px; padding-bottom:8px; border-bottom:1px solid #1a3350; }
+.section h3 { color:#d4a853; font-size:15px; margin:12px 0 8px; }
+.item { background:#152238; padding:15px; margin:10px 0; border-radius:6px; border-left:3px solid #2d5a88; }
+.item.priority-high { border-left-color:#e05555; }
+.item.priority-mid { border-left-color:#d4a853; }
+.item.priority-low { border-left-color:#5a8a5a; }
+.item .title { color:#e8d5a0; font-weight:bold; font-size:15px; }
+.item .meta { font-size:12px; color:#667; margin:4px 0 8px; }
+.tag { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; margin-right:5px; background:#1a3350; }
+.tag.manuf { background:#2d3a20; color:#8ab85a; }
+.tag.ecom { background:#2d203a; color:#b08ad8; }
+.tag.invest { background:#3a2d20; color:#d8b08a; }
+.tag.general { background:#202a3a; color:#8ab0d8; }
+.action { background:#1a2820; padding:12px 16px; border-radius:6px; margin:10px 0; font-size:14px; border:1px solid #2a4830; }
+.prompt-box { background:#0d1620; border:1px solid #2a3a50; border-radius:6px; padding:12px; margin:8px 0; font-size:13px; color:#8ab0d0; font-family:monospace; white-space:pre-wrap; }
+.footer { text-align:center; padding:20px; color:#445; font-size:12px; }
+ul { padding-left:20px; }
+li { margin:5px 0; }
 </style>
 </head>
 <body>
-
 <div class="header">
-  <div>
-    <h1>📊 每日 AI 业务增长与自动化洞察</h1>
-    <span class="date">2026年5月31日（周日）</span>
+  <h1>📊 每日 AI 业务增长与自动化洞察</h1>
+  <div class="date">2026-06-17 · 建筑管材业务主管专属</div>
+  <div class="summary">
+    <strong>⚡ 今日总判断：</strong>AI产业正经历「工具过剩」→「系统整合」的跃迁。电商领域StoreClaw验证了All-in-One模式的PMF；DeepSeek首轮融资200亿标志着中国AI从追赶进入独立赛道；小米MiMo Claw正式版每天免费4小时意味着AI编程辅助进入零成本时代。对管材业务而言，今天最值得关注的是：<strong>All-in-One数据打通模式可以直接映射到B2B工程销售管理</strong>——把CRM、招投标信息、客户跟进、库存报价全部接入一个AI大脑。
   </div>
-  <div class="source">数据来源：极客公园 · IT之家</div>
 </div>
-
 <div class="container">
+<div class="section"><h2>🔥 今日高价值动态 Top 5</h2>
+<div class="item priority-high">
+<div class="title">1. 电商「AI 操作系统」诞生：StoreClaw 跨平台一体化</div>
+<div class="meta"><span class="tag ecom">跨境电商</span><span class="tag manuf">业务管理</span> 来源：极客公园 · 6月16日</div>
+<p>StoreClaw 原生集成 Shopify/Amazon/Instagram/LinkedIn/Discord/WhatsApp/Facebook 7个平台，预装Listing优化、GEO、竞品监控、邮件营销等几十个电商 Skills。香氛品牌INCENZO（3人团队）运营自动化率85%，月省数千美元外包费。LED品牌Emiteve（年销2000万美元）上新品从1周缩到2小时，转化率从&lt;10%提升到14%。</p>
+<p><strong>为什么重要：</strong>这是行业首个真正All-in-One的AI经营系统，从「人在十几个后台间搬运数据」到「一个AI大脑统一调度」。Product Hunt日榜/周榜双第一验证了市场饥渴。</p>
+<p><strong>对你的价值：</strong>①跨境电商可直接试用（免费层存在）；②B2B管材销售管理的All-in-One路径已验证——把CRM+招投标+客户跟进+报价整合进统一AI入口的时机已成熟。</p>
+</div>
+<div class="item priority-high">
+<div class="title">2. DeepSeek 完成首轮融资：梁文锋个人出资200亿元</div>
+<div class="meta"><span class="tag general">AI通用</span><span class="tag invest">投资</span> 来源：极客公园 · 6月17日</div>
+<p>传DeepSeek完成首轮融资，梁文锋个人出资200亿元人民币。这意味着DeepSeek在财务上完全独立，不受外部资本压力影响，可以继续坚持开源+低价策略。</p>
+<p><strong>为什么重要：</strong>你目前在重度使用DeepSeek v4-pro做文本推理（最便宜+中文最好）。首轮融资确保其长期可用性，不担心突然断供或涨价。</p>
+<p><strong>建议动作：</strong>继续以DeepSeek为主力推理引擎。关注其是否推出企业版/Agent版，可能会有更适合B2B销售场景的功能。</p>
+</div>
+<div class="item priority-high">
+<div class="title">3. 小米 MiMo Claw 正式版上线：每天免费4小时</div>
+<div class="meta"><span class="tag general">AI通用</span> 来源：极客公园 · 6月17日</div>
+<p>小米AI编程助手「龙虾」MiMo Claw正式版上线，每天4小时免费时长。支持代码生成、调试、重构等全流程。</p>
+<p><strong>为什么重要：</strong>你已经在用MiMo-omni做看图OCR。MiMo Claw免费4小时意味着AI编程助手的门槛降到零。对建筑事业部的日常小工具开发（如Excel自动化、报表生成）可直接用。</p>
+<p><strong>建议动作：</strong>今天试用MiMo Claw写一个「客户跟进周报自动生成」脚本（15分钟可完成）。</p>
+</div>
+<div class="item priority-mid">
+<div class="title">4. ChatGPT 全球市场份额首次跌破 50%</div>
+<div class="meta"><span class="tag general">AI通用</span> 来源：极客公园 · 6月17日</div>
+<p>据数据机构统计，ChatGPT全球市场份额首次跌破50%，被DeepSeek、Claude、Gemini等竞争对手蚕食。OpenAI在消费端的垄断地位正在瓦解。</p>
+<p><strong>对你的价值：</strong>AI工具选择进入多头时代，不必锁定单一平台。你的双模型策略（DeepSeek主力+MiMo看图）已验证正确。</p>
+</div>
+<div class="item priority-mid">
+<div class="title">5. SpaceX 换股收购 Cursor，交易估值 600 亿美元</div>
+<div class="meta"><span class="tag general">AI通用</span><span class="tag invest">投资</span> 来源：极客公园 · 6月17日</div>
+<p>SpaceX以换股方式收购AI编程工具Cursor，交易估值600亿美元。这是AI IDE赛道迄今为止最大的一笔并购，标志着AI开发工具成为基础设施级资产。</p>
+<p><strong>对你的价值：</strong>AI编程工具进入巨头整合期（Cursor→SpaceX、Copilot→微软），独立工具生存空间收窄。长期看，选工具要选有生态支撑的（MiMo免费+DeepSeek低价是当前最优组合）。</p>
+</div></div>
 
-<!-- 1) 今日总判断 -->
-<div class="summary-card">
-  <div class="label">📌 今日总判断</div>
-  <p>本周最值得关注的 AI 变化是<span class="highlight">阿里云完成"Agentic 时刻"组织级转身</span>——从卖 GPU 转向卖 Agent 结果，56款产品 Skill 化、千问云新官网上线。</p>
-  <p><strong>三重意义：</strong></p>
-  <div class="tags">
-    <span class="tag">🏭 业务管理：百炼平台让非技术人员也能用 Agent</span>
-    <span class="tag">📈 投资工具：Qwen3.7-Max 登顶国产开源</span>
-    <span class="tag">🛒 跨境电商：阿里生态 Agent 化利好全链路</span>
-  </div>
+<div class="section"><h2>🏭 今日行业专属：建筑管材/管道业务 AI 洞察</h2>
+<h3>从StoreClaw看B2B工程销售的AI整合路径</h3>
+<p>StoreClaw在电商领域验证的模式——「统一数据层 + 预装行业Skills + 跨平台调度」——可以直接映射到建筑管材B2B销售场景：</p>
+<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;">
+<tr style="background:#152238;"><th style="padding:8px;text-align:left;border:1px solid #1a3350;color:#d4a853;">电商场景</th><th style="padding:8px;text-align:left;border:1px solid #1a3350;color:#d4a853;">管材B2B对应场景</th></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">跨平台数据（Amazon/Shopify/TikTok）</td><td style="padding:8px;border:1px solid #1a3350;">跨系统数据（CRM/招投标/ERP/企微）</td></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">Listing优化 Skill</td><td style="padding:8px;border:1px solid #1a3350;">投标书生成/报价单 Skill</td></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">竞品监控 Skill</td><td style="padding:8px;border:1px solid #1a3350;">竞争对手中标动态监控</td></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">评论洞察 Skill</td><td style="padding:8px;border:1px solid #1a3350;">客户拜访纪要→需求洞察 Skill</td></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">邮件营销 Skill</td><td style="padding:8px;border:1px solid #1a3350;">客户跟进提醒+话术生成</td></tr>
+<tr><td style="padding:8px;border:1px solid #1a3350;">经营日报 Skill</td><td style="padding:8px;border:1px solid #1a3350;">销售周报/月度经营分析</td></tr>
+</table>
+<div class="action"><strong>建议试点：</strong>用现有商机雷达的785条数据 + 飞书聊天记录 + Excel销售数据，做一个MVP「管材销售AI驾驶舱」——整合「今日商机+客户跟进状态+本周目标缺口」三屏合一。技术路径：DeepSeek API + Claude Code生成HTML单文件，2小时内可出原型。</div>
+<p><strong>ROI判断：高</strong> — StoreClaw已证明3人团队可省数千美元/月，管材52人团队即使提效10%，ROI远超投入。</p>
 </div>
 
-<!-- Charts -->
-<div class="charts-row">
-  <div class="chart-card">
-    <h3>优先级分布</h3>
-    <canvas id="priorityChart"></canvas>
-  </div>
-  <div class="chart-card">
-    <h3>方向分布</h3>
-    <canvas id="directionChart"></canvas>
-  </div>
+<div class="section"><h2>💼 今日管理赋能建议</h2>
+<p>今天最值得做的一件事：<strong>梳理你当前「人肉胶水」最严重的3个环节</strong></p>
+<p>StoreClaw文章揭示了一个真相：AI工具越多，人的劳动强度反而上升——因为数据在不同系统间搬运的工作量增加了。管材业务是否存在类似问题？</p>
+<ul><li>招投标信息从商机雷达到微信群，需要人工转发？</li>
+<li>客户跟进状态散落在Excel/飞书/微信/脑中？</li>
+<li>周报数据需要从多个来源手工汇总？</li></ul>
+<div class="action">今日花15分钟列出你当前「在不同系统间搬运数据」的前3个高频动作，下周用AI自动化替代至少1个。</div>
 </div>
 
-<!-- 2) Top 5 -->
-<div class="section-card">
-  <h2>🔥 今日高价值动态 Top 5</h2>
-
-  <h3><span class="badge badge-high">高</span>① 阿里云 Agentic 转身：从"卖 Token"到"卖结果"</h3>
-  <p>56款产品 Skill 化，千问云新官网上线，销售考核从"算力销量"变为"Agent 闭环比例"。百炼平台支持 OpenAI SDK 兼容 + Bailian CLI 直接对接 Claude Code。</p>
-  <p>💡 <strong>建议：</strong>本周注册百炼平台，试用 Qwen3.7-Max API 生成客户拜访摘要。</p>
-
-  <hr class="separator">
-
-  <h3><span class="badge badge-high">高</span>② 工厂物理 AI 落地加速——微亿智造验证工业具身智能 ROI</h3>
-  <p>从 2018 年起将 AI 引入机械臂，实现"看见→判断→处理"全闭环。2025 年研发投入 2.35 亿元（占收入 29.6%），海外从 0 到 1。累计 23TB+ 工业精标数据，新项目部署从数月压缩至数周。</p>
-  <p>💡 <strong>建议：</strong>调研建筑管材行业质检/码垛环节的人工占比，评估 AI 替代的 ROI。</p>
-
-  <hr class="separator">
-
-  <h3><span class="badge badge-high">高</span>③ Devin 用 AI 自写 90% 代码，估值暴涨 25 倍</h3>
-  <p>Cognition AI 的 Devin 平台实现 AI 自写 90% 自身代码，估值从上一轮涨 25 倍。Vibe Coding 平台独立路径被验证——"非程序员用自然语言造工具"时代加速到来。</p>
-  <p>💡 <strong>建议：</strong>本周用 Claude Code 试做一个"客户拜访记录→摘要"小工具。</p>
-
-  <hr class="separator">
-
-  <h3><span class="badge badge-mid">中</span>④ Gemini 3.5 Flash：Agent 游戏规则因速度而改变</h3>
-  <p>极低延迟 + 极低成本让 Agent 从 PoC 走向生产。可搭"实时监控竞品招投标信息"的 Agent，不怕 Token 烧钱。</p>
-  <p>💡 <strong>建议：</strong>关注 Flash 类模型的中文接入方案（阿里百炼/火山引擎）。</p>
-
-  <hr class="separator">
-
-  <h3><span class="badge badge-mid">中</span>⑤ Google I/O 2026：AI 从辅助走向独立完成复杂工作流</h3>
-  <p>行业共识形成——Agent 是 2026 年 AI 落地的核心形态。Gemini Spark 个人 Agent 24 小时云端执行长任务。</p>
-  <p>💡 <strong>建议：</strong>列出日常工作中"占用时间但不需要判断力"的 3 个环节，优先 Agent 化。</p>
+<div class="section"><h2>📈 今日投资工具灵感</h2>
+<h3>股票</h3>
+<p><strong>SpaceX收购Cursor的启示：</strong>AI基础设施成为巨头争夺的战略资产。可关注A股中AI基础设施相关标的（算力、数据中心、AI开发平台）。但不是买卖建议，仅作研究关注清单。</p>
+<div class="action">小工具建议：用DeepSeek API写一个「A股AI产业链公司周报自动汇总」——抓取巨潮资讯网公告，提取合同/订单/合作类信息，过滤噪音。</div>
+<h3>数字货币</h3>
+<p>今天无明显触发信号。AI Agent赛道融资活跃（DeepSeek 200亿），但加密AI叙事尚未形成新热点。保持观察。</p>
+<div class="action">风险提醒：加密AI概念币波动极大，不与AI公司融资消息做简单映射。</div>
 </div>
 
-<!-- 3) Industry -->
-<div class="section-card">
-  <h2>🏭 行业专属：建筑管材 / 管道业务 AI 洞察</h2>
-  <h3>业务场景</h3>
-  <p>管材/管道行业的生产质检 + 仓储物流 + 销售决策联动</p>
-  <h3>AI 应用方式（映射自微亿智造案例）</h3>
-  <ul>
-    <li><strong>质检环节：</strong>AI 视觉 + 机械臂"飞拍技术"——不停歇连续拍摄，数分钟完成数百个检测点位</li>
-    <li><strong>码垛环节：</strong>不同规格管材智能码垛——AI 像人一样"先看、再判断、再放置"</li>
-    <li><strong>销售决策联动：</strong>质检数据→自动生成批次质量报告→驱动客户沟通策略</li>
-  </ul>
-  <h3>建议试点</h3>
-  <p>先做"轻量化"切入：手机拍摄管材外观 + AI 视觉模型（Qwen-VL）做缺陷初筛，<span class="highlight">零硬件投入</span>。</p>
-  <p><span class="badge badge-roi">ROI：中</span> 短期 AI 视觉辅助质检 ROI 高；全自动化机械臂适合大规模产线</p>
+<div class="section"><h2>🛒 今日一人公司自动化洞察</h2>
+<h3>StoreClaw对Ozon卖家的直接意义</h3>
+<p>你现在有Ozon店铺Runhe Select待启动。StoreClaw的模式提供了一个重要思路：<strong>选品阶段就要考虑「AI可操作的数据源」</strong>。</p>
+<ul>
+<li>✅ StoreClaw已集成Amazon/Shopify — 可做竞品分析</li>
+<li>⚠️ Ozon不在其集成列表 — 但可通过自定义MCP连接器接入</li>
+<li>✅ 预装Skills覆盖Listing优化/关键词/GEO/竞品监控 — 上手即用</li>
+</ul>
+<div class="action"><strong>建议测试动作：</strong>注册StoreClaw免费层 → 用你的管材品类关键词跑一次跨平台竞品分析 → 对比Ozon上同类商品 → 验证选品方向。</div>
+<p><strong>为什么适合一人公司：</strong>StoreClaw的核心价值就是把「需要10人运营团队才能做的事」压缩到1-3人。INCENZO 3人团队85%自动化率的案例就是一人公司的最佳参照。</p>
 </div>
 
-<!-- 4) Management -->
-<div class="section-card">
-  <h2>📋 管理赋能建议</h2>
-  <h3>用 AI 重构你的"例会信息流"</h3>
-  <p>作为业务部门主管，例会是你最重要的信息汇聚点，但也是时间黑洞。</p>
-  <ol>
-    <li>下次例会前，让团队成员用固定模板（本周做了什么 / 卡点 / 下周计划）发到群里</li>
-    <li>把群消息复制给 AI，Prompt：<em>"整理为：① 整体进展摘要 ② 共性问题 Top 3 ③ 需要我介入的决策事项"</em></li>
-    <li>例会直接从 AI 整理结果开始讨论</li>
-  </ol>
-  <p>🎯 <strong>效果：</strong>例会时间缩短 50%，精力从"听汇报"转向"做决策"</p>
+<div class="section"><h2>🛠️ 今日工具推荐</h2>
+<div class="item priority-high">
+<div class="title">StoreClaw — 电商AI经营操作系统</div>
+<div class="meta"><span class="tag ecom">跨境电商</span> Product Hunt 日榜+周榜第一</div>
+<p><strong>核心作用：</strong>7平台数据打通（Shopify/Amazon/Instagram/LinkedIn/Discord/WhatsApp/Facebook）+ 几十个预装电商Skills + 定时任务自动化</p>
+<p><strong>适合场景：</strong>跨境电商全链路（选品→Listing→广告→社媒→评论→邮件→日报）</p>
+<p><strong>上手难度：</strong>低 — 预装Skills开箱即用，不需要写Prompt</p>
+<p><strong>是否值得深入研究：</strong>⭐️⭐️⭐️⭐️⭐️ 强烈推荐。Ozon开店前的市场调研阶段即可开始使用。</p>
+</div></div>
+
+<div class="section"><h2>📖 今日案例</h2>
+<h3>INCENZO香氛品牌：3人团队×85%自动化率</h3>
+<p><strong>场景：</strong>Shopify香氛品牌，3人小团队，过去每周大量时间花在SEO、技术修复、分销邮件上，依赖外包。</p>
+<p><strong>关键做法：</strong>接入StoreClaw后，meta description/alt text批量重写、邮件分销等一键部署，运营自动化率达到85%。</p>
+<p><strong>可复制点：</strong>①先找出重复性最高的3个任务（SEO/邮件/内容），逐个接入AI Skill；②不追求100%自动化，85%已可砍掉外包预算。</p>
+<p><strong>对你的启发：</strong>Ozon店铺启动阶段就可以建立「SEO+邮件+内容」的AI自动化栈，3人团队的业务量用AI完全可以覆盖。</p>
 </div>
 
-<!-- 5) Investment -->
-<div class="section-card">
-  <h2>💰 投资工具灵感</h2>
-  <h3>📈 股票</h3>
-  <p><strong>方向：</strong>招投标信息 → 供应链股票映射工具</p>
-  <p>自动抓取全国大型基建招标公告 → 提取管材相关项目 → 映射到 A 股管材企业（伟星新材、中国联塑等）→ 形成"政策热度指数"</p>
-  <blockquote>⚠️ 风险提醒：招投标信息≠股价涨跌，仅作为行业景气度参考。AI 抓取信息需人工核实。</blockquote>
+<div class="section"><h2>💡 今日实操技巧</h2>
+<h3>电商Prompt：跨平台竞品分析一键生成</h3>
+<div class="prompt-box">你是一名跨境电商运营专家。请分析以下竞品信息，输出结构化报告：
 
-  <h3>🪙 数字货币</h3>
-  <p><strong>方向：</strong>链上数据 Agent 化——大额转账自动监控 + 飞书推送</p>
-  <blockquote>⚠️ 风险提醒：链上数据有滞后性，大额转账可能只是内部调仓。任何自动提醒都只是"信息输入"，不是交易信号。</blockquote>
+【我的产品】
+- 品类：管材/管道配件
+- 目标平台：Ozon
+- 目标市场：俄罗斯
+- 价格区间：填入你的价格区间
+
+【竞品信息】
+粘贴从StoreClaw/Amazon/Ozon搜集的3-5个头部竞品数据
+
+请输出：
+1. 价格带分布与我的定位建议
+2. Listing关键词差异分析
+3. 主图/详情页差异化方向
+4. 评分&amp;评论中的用户痛点（我们的机会点）
+5. 一周内可执行的3个优化动作</div>
 </div>
 
-<!-- 6) E-commerce -->
-<div class="section-card">
-  <h2>🛒 一人公司自动化洞察</h2>
-  <h3>今日最值得自动化：Listing 多语言批量生成</h3>
-  <p><strong>推荐工具：</strong>Qwen3.7-Max（百炼平台）+ Batch API</p>
-  <ul>
-    <li>Qwen 多语言能力进入全球第一梯队</li>
-    <li>Batch API 成本比实时便宜 50%+</li>
-    <li>AI 10 分钟生成 100 条 Listing 初稿，人工只需审核微调</li>
-  </ul>
-  <p>💡 <strong>测试动作：</strong>选 3 个产品，用 Prompt 生成英文 Listing，对比人工版本质量差异。</p>
+<div class="section"><h2>✅ 今日行动清单</h2>
+<h3>今天立刻做</h3>
+<ul>
+<li>📋 梳理当前「人肉搬运数据」的Top 3场景（15分钟）</li>
+<li>🔧 试用MiMo Claw写一个客户跟进脚本（15分钟）</li>
+<li>🛒 注册StoreClaw免费层，跑一次管材品类竞品分析（20分钟）</li>
+</ul>
+<h3>本周推进</h3>
+<ul>
+<li>🤖 搭建「管材销售AI驾驶舱」MVP（商机+客户+目标三屏合一）</li>
+<li>📊 用AI自动化至少1个「数据搬运」环节（选最痛的那个）</li>
+</ul>
+<h3>本月沉淀</h3>
+<ul>
+<li>📦 形成「B2B管材销售AI工具栈」标准配置文档</li>
+<li>🎯 Ozon店铺选品研究完成，确定首批3-5个SKU</li>
+</ul>
 </div>
-
-<!-- 7) Tool -->
-<div class="section-card">
-  <h2>🔧 今日工具推荐</h2>
-  <div class="tool-highlight">
-    <div class="name">阿里云百炼（Bailian）平台</div>
-    <p>模型推理 + Agent 构建二合一平台 | 200+ 模型 API | OpenAI SDK 兼容 | Prompt Caching 降成本 98%</p>
-    <p><strong>适合场景：</strong>业务管理 Agent · 投资研究 · 电商 Listing 批量生成</p>
-    <p><strong>上手难度：</strong>⭐⭐（注册即用）| <strong>是否深入研究：</strong>是——未来 1-2 年国内 Agent 开发核心基础设施</p>
-  </div>
 </div>
-
-<!-- 8) Case -->
-<div class="section-card">
-  <h2>📖 今日案例</h2>
-  <h3>微亿智造——从 2018 年开始把 AI 引入传统机械臂</h3>
-  <p><strong>场景：</strong>工业制造（检测 + 打磨 + 装配 + 码垛）</p>
-  <p><strong>关键做法：</strong></p>
-  <ul>
-    <li>不从"人形机器人"出发，在传统机械臂上加"AI 大脑"</li>
-    <li>"先轻后重"策略：先 AI 视觉质检 → 再做"查打一体" → 再探索 VLA</li>
-    <li>核心分界线："看见→判断→处理"闭环 vs 传统"预设轨迹执行"</li>
-    <li>数据飞轮：23TB+ 精标数据，新项目从数月压缩至数周</li>
-  </ul>
-  <p><strong>对你的启发：</strong>从手机拍照 + AI 质检做起，零硬件投入先验证。关键是找到"高频 + ROI 清晰"的第一个场景。</p>
-</div>
-
-<!-- 9) Tip -->
-<div class="section-card">
-  <h2>💡 今日实操技巧（业务管理 Prompt）</h2>
-  <h3>客户拜访后快速生成结构化记录</h3>
-  <blockquote>
-    <strong>Prompt 模板：</strong><br>
-    你是一名 B2B 销售管理助手。我将提供一段客户拜访的原始记录，请整理为：<br>
-    1. 客户基本信息 2. 核心议题 3. 痛点/需求 4. 我方回应 5. 客户疑虑<br>
-    6. 竞争情况 7. 下一步动作（谁、做什么、截止时间） 8. 拜访评分（1-10）<br><br>
-    使用方式：拜访后 5 分钟口述（微信语音转文字）→ 粘贴 → 30 秒拿到结构化纪要
-  </blockquote>
-</div>
-
-<!-- 10) Action -->
-<div class="section-card">
-  <h2>✅ 今日行动清单</h2>
-  <table class="action-table">
-    <tr><th>时间</th><th>行动</th><th>预计耗时</th></tr>
-    <tr><td>今天立刻做</td><td>注册阿里云百炼平台，试用 Qwen3.7-Max 生成客户拜访摘要</td><td>20 分钟</td></tr>
-    <tr><td>今天立刻做</td><td>用 Prompt 模板整理本周最后一次客户拜访记录</td><td>5 分钟</td></tr>
-    <tr><td>本周推进</td><td>用 Claude Code 搭建"管材行业招投标舆情监控"HTML 看板</td><td>2 小时</td></tr>
-    <tr><td>本周推进</td><td>选 3 个产品，用 AI 生成英文 Listing 初稿并人工审核</td><td>1 小时</td></tr>
-    <tr><td>本月沉淀</td><td>建立"例会 AI 纪要 SOP"——固定模板 + AI 整理 → 例会只讨论决策</td><td>持续优化</td></tr>
-    <tr><td>本月沉淀</td><td>调研管材质检环节 AI 视觉可行性（手机拍照 → AI 判断缺陷）</td><td>调研 + PoC</td></tr>
-  </table>
-</div>
-
-</div>
-
-<div class="footer">
-  AI业务增长与自动化洞察 · 每日早9点自动生成 · 2026<br>
-  信息来源：极客公园 (geekpark.net) · IT之家 (ithome.com) · 训练知识
-</div>
-
-<script>
-// Priority pie chart
-new Chart(document.getElementById('priorityChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['高优先级', '中优先级'],
-    datasets: [{
-      data: [3, 2],
-      backgroundColor: ['#d4a853', '#e8c97a88'],
-      borderColor: ['#1a1a2e', '#1a1a2e'],
-      borderWidth: 2
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: true,
-    plugins: {
-      legend: { position: 'bottom', labels: { color: '#e0d6c2', font: { size: 12 }, padding: 16 } }
-    }
-  }
-});
-
-// Direction bar chart
-new Chart(document.getElementById('directionChart'), {
-  type: 'bar',
-  data: {
-    labels: ['业务管理', '跨境电商', '投资工具', 'AI通用'],
-    datasets: [{
-      label: '内容占比',
-      data: [42, 28, 20, 10],
-      backgroundColor: ['#d4a853', '#e8c97a', '#c49b3f', '#b8860b'],
-      borderRadius: 4
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: true,
-    scales: {
-      y: { beginAtZero: true, max: 50, ticks: { color: '#9a8c7a', callback: v => v + '%' }, grid: { color: '#2a2a4a44' } },
-      x: { ticks: { color: '#e0d6c2', font: { size: 11 } }, grid: { display: false } }
-    },
-    plugins: {
-      legend: { display: false }
-    }
-  }
-});
-</script>
-
-</body>
-</html>
+<div class="footer">每日AI业务增长与自动化洞察 · 2026-06-17 · 基于极客公园等来源采集<br>⚠️ 投资相关内容仅供参考，不构成投资建议</div>
+</body></html>
